@@ -1,3 +1,4 @@
+import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 
 const schema = {
   description: 'Alive Check',
@@ -10,7 +11,6 @@ const schema = {
         status: {
           type: 'string',
         },
-
         date: {
           type: 'string',
         },
@@ -19,16 +19,18 @@ const schema = {
   },
 };
 
-const handler = (req, reply) => {
+const handler = (req: FastifyRequest, reply: FastifyReply) => {
   reply.send({
     status: 'OK',
     date: new Date(),
   });
 };
 
-module.exports = {
-  method: 'GET',
-  url: '/heartbeat',
-  handler,
-  schema,
+export default async (fastify: FastifyInstance) => {
+  fastify.route({
+    method: 'GET',
+    url: '/heartbeat',
+    handler,
+    schema,
+  });
 };

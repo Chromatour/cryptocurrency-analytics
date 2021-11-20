@@ -1,8 +1,7 @@
-const { initServer } = require('./server');
-const { log } = require('./lib');
+import initServer from './server';
+import { log } from './lib/logger';
 
 module.exports = (async () => {
-
   // Start server
   try {
     const server = await initServer();
