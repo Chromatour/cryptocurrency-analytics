@@ -4,7 +4,11 @@
   "description": "Bitcoin market value analyzer",
   "main": "index.js",
   "dependencies": {
-    "bent": "^7.3.12"
+    "bent": "^7.3.12",
+    "config": "^3.3.6",
+    "fastify": "^3.24.0",
+    "fastify-swagger": "^4.12.6",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "eslint": "^8.2.0"
