@@ -14,6 +14,7 @@ const SWAGGER_OPTIONS = config.get('swagger');
 /**
  * Init server
  */
+
 const initServer = async () => {
   const server = fastify({
     logger: FASTIFY_OPTIONS.logger,

@@ -4,6 +4,7 @@
   "description": "Bitcoin market value analyzer",
   "main": "index.js",
   "dependencies": {
+    "@sinclair/typebox": "^0.21.2",
     "@types/bent": "^7.3.2",
     "@types/node": "^16.11.9",
     "bent": "^7.3.12",

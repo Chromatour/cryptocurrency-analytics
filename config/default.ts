@@ -9,4 +9,8 @@ module.exports = {
     logger: false,
     ignoreTrailingSlash: true,
   },
+  requestUrl: "https://api.coingecko.com/api/v3/coins/",
+  marketChartQueryPrefix: "market_chart/range?",
+  currency: "vs_currency=eur",
+  cryptocurrencyId: "bitcoin"
 };
