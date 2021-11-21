@@ -1,31 +1,56 @@
-import { log } from './logger';
 import { MarketChart } from '../types/coingecko.types';
 
 const calculateDownwardTrend = (marketChart: MarketChart) => {
   const { prices } = marketChart;
-  let beginningDate: [number, number] = [0, 0];
-  let endingDate: [number, number] = [0, 0];
+
+  // Filter data first so there's only one piece of data per day
+  const hourlyPrices = prices.filter((price) => price[0]
+  % (86400 * 1000) < 3600 * 1000);
+
+  // Data structure: [number(unix timestamp), number(btc price)]
   let longestTimeFrame: [number, number] = [0, 0];
-  let previousDate: [number, number] = [0, 0];
-  prices.forEach((price) => {
-    if (price[1] > previousDate[1]) {
-      endingDate = [previousDate[0], previousDate[1]];
-      if (beginningDate[1] !== 0 && (endingDate[0] - beginningDate[0])
-        > (longestTimeFrame[1] - longestTimeFrame[0])) {
-        longestTimeFrame = [beginningDate[0], endingDate[0]];
-      }
-      beginningDate = endingDate;
+  let begDate: number = 0;
+  let endDate: number = 0;
+  let prevDate: number = 0;
+  let prevPrice: number = 0;
+  let flag: boolean = false;
+
+  hourlyPrices.forEach((datePrice, idx, arr) => {
+    const date = datePrice[0];
+    const price = datePrice[1];
+
+    if (idx === 0) {
+      begDate = date;
+      endDate = date;
+    } else if (price > prevPrice) {
+      endDate = prevDate;
+      flag = true;
+    } else if (idx === arr.length - 1) { // last iteration if downward trend
+      endDate = date;
+      flag = true;
     }
-    previousDate = [price[0], price[1]];
+
+    if (flag && idx !== 0) {
+      if ((endDate - begDate)
+      > (longestTimeFrame[1] - longestTimeFrame[0])) {
+        longestTimeFrame = [begDate, endDate];
+      }
+      begDate = date;
+    }
+    flag = false;
+    prevDate = date;
+    prevPrice = price;
   });
 
-  const timeFrame: { beginDate: Date, endDate: Date, numberOfDays: number } = {
+  // Create object for results
+  const result: { beginDate: Date, endDate: Date, numberOfDays: number } = {
     beginDate: new Date(longestTimeFrame[0]),
     endDate: new Date(longestTimeFrame[1]),
     numberOfDays:
-      Math.abs(longestTimeFrame[0] - longestTimeFrame[1]) / 1000 / 60 / 60 / 24,
+      Math.round(Math.abs(longestTimeFrame[0]
+        - longestTimeFrame[1]) / 1000 / 60 / 60 / 24),
   };
-  return timeFrame;
+  return result;
 };
 
 export default calculateDownwardTrend;

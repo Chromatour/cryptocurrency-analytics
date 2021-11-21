@@ -14,11 +14,11 @@ const schema = {
     properties: {
       fromDate: {
         type: 'string',
-        format: 'date-time',
+        format: 'date',
       },
       toDate: {
         type: 'string',
-        format: 'date-time',
+        format: 'date',
       },
     },
   },
@@ -28,11 +28,11 @@ const schema = {
       properties: {
         beginDate: {
           type: 'string',
-          format: 'date-time',
+          format: 'date',
         },
         endDate: {
           type: 'string',
-          format: 'date-time',
+          format: 'date',
         },
         numberOfDays: {
           type: 'number',
@@ -44,8 +44,10 @@ const schema = {
 
 const handler = async (req: FastifyRequest, reply: FastifyReply) => {
   const body = req.body as DateBody;
+
   const fromDate = Math.round(new Date(body.fromDate).getTime() / 1000);
-  const toDate = Math.round(new Date(body.toDate).getTime() / 1000);
+  const toDate = Math.round(new Date(body.toDate).getTime() / 1000) + 3600;
+
   let marketChart: MarketChart;
   try {
     marketChart = await marketChartRequest(fromDate, toDate);
