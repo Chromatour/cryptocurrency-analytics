@@ -1,7 +1,7 @@
 export interface MarketChart {
   prices: number[][],
   marketCap: number[][],
-  tradingVolumes: number[][]
+  total_volumes: number[][]
 }
 
 export interface DateBody {

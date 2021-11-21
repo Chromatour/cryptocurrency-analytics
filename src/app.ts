@@ -1,5 +1,5 @@
 import initServer from './server';
-import { log } from './lib/logger';
+import { log } from './lib/utils/logger';
 
 module.exports = (async () => {
   // Start server

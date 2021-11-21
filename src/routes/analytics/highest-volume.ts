@@ -1,12 +1,12 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { log } from '../../lib/utils/logger';
-import calculateDownwardTrend from '../../lib/calculate-downward-trend';
 import marketChartRequest from '../../lib/market-chart-request';
 import { DateBody, MarketChart } from '../../types/coingecko.types';
+import findHighestVolume from '../../lib/find-highest-volume';
 
 const schema = {
-  description: 'Downward trend calculator',
-  summary: 'Calculate longest downward trend between given days',
+  description: 'Highest trading volume calculator',
+  summary: 'Find highest trading volume and volume worth in given range',
   tags: ['Analytics'],
   body: {
     type: 'object',
@@ -26,16 +26,18 @@ const schema = {
     200: {
       type: 'object',
       properties: {
-        beginDate: {
+        tradeDate: {
           type: 'string',
           format: 'date',
         },
-        endDate: {
+        tradeValue: {
           type: 'string',
-          format: 'date',
         },
-        numberOfDays: {
-          type: 'number',
+        unit: {
+          type: 'string',
+        },
+        currency: {
+          type: 'string',
         },
       },
     },
@@ -59,15 +61,16 @@ const handler = async (req: FastifyRequest, reply: FastifyReply) => {
     });
     return;
   }
-  const longestTimeFrame = calculateDownwardTrend(marketChart);
 
-  reply.send(longestTimeFrame);
+  const result = findHighestVolume(marketChart);
+
+  reply.send(result);
 };
 
 export default async (fastify: FastifyInstance) => {
   fastify.route({
     method: 'POST',
-    url: '/downward-trend',
+    url: '/highest-volume',
     handler,
     schema,
   });
