@@ -4,7 +4,7 @@
     "host": "localhost:3002",
     "schemes": ["http", "https"]
   },
-  "routePrefix": "/cryptomarket-analyzer",
+  "routePrefix": "/cryptocurrency-analyzer",
   "fastifyOptions": {
     "logger": false,
     "ignoreTrailingSlash": true
