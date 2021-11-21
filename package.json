@@ -6,7 +6,6 @@
   "dependencies": {
     "@sinclair/typebox": "^0.21.2",
     "@types/bent": "^7.3.2",
-    "@types/node": "^16.11.9",
     "bent": "^7.3.12",
     "config": "^3.3.6",
     "fastify": "^3.24.0",
@@ -17,10 +16,10 @@
   "devDependencies": {
     "@tsconfig/node14": "^1.0.0",
     "@types/config": "0.0.38",
+    "@types/node": "^16.11.9",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
     "eslint": "^8.2.0",
-    "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^12.3.1",
     "eslint-plugin-import": "^2.25.3",
     "ts-node": "^10.4.0",
@@ -28,7 +27,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "npx ts-node ./src/app.ts"
   },
   "author": "Niko Kangasniemi",
   "license": "ISC"

@@ -9,7 +9,7 @@ $ npm i
 $ nodemon
 ```
 
-Access the Swagger interface with browser at http://localhost:3002/cryptocurrency-analyzer/documentation/static/index.html
+Access the Swagger interface with browser at http://localhost:3002/cryptocurrency-analytics/documentation/static/index.html
 
 ## TODO
 - Fetch the date with highest trading volume in given range
