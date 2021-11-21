@@ -1,6 +1,5 @@
 import bent from 'bent';
 import config from 'config';
-import { log } from './logger';
 import { MarketChart } from '../types/coingecko.types';
 
 const MARKET_CHART_PREFIX: string = config.get('marketChartQueryPrefix');
