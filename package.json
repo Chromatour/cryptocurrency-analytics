@@ -14,7 +14,7 @@
     "winston": "^3.3.3"
   },
   "devDependencies": {
-    "@tsconfig/node14": "^1.0.0",
+    "@tsconfig/node14": "^1.0.1",
     "@types/config": "0.0.38",
     "@types/node": "^16.11.9",
     "@typescript-eslint/eslint-plugin": "^5.4.0",

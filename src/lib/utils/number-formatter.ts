@@ -6,10 +6,11 @@ const numberFormatter = (num: number, digits: number = 2) => {
     { value: 1e9, symbol: ' B' },
     { value: 1e12, symbol: ' T' },
   ];
-  const rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
-  const item = lookup.slice().reverse().find((lookupItem) => num >= lookupItem.value);
-  let value = '0';
-  let unit = '0';
+  const rx: RegExp = /\.0+$|(\.[0-9]*[1-9])0+$/;
+  const item: { value: number, symbol: string }
+  | undefined = lookup.slice().reverse().find((lookupItem) => num >= lookupItem.value);
+  let value: string = '0';
+  let unit: string = '0';
   if (item) {
     value = (num / item.value).toFixed(digits).replace(rx, '$1');
     unit = item.symbol;
