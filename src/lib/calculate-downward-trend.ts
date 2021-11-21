@@ -3,7 +3,7 @@ import { MarketChart } from '../types/coingecko.types';
 const calculateDownwardTrend = (marketChart: MarketChart) => {
   const { prices } = marketChart;
 
-  // Filter data first so there's only one piece of data per day
+  // Filter data first so there's only one piece of data per day that is nearest the midnight
   const hourlyPrices = prices.filter((price) => price[0]
   % (86400 * 1000) < 3600 * 1000);
 
@@ -13,31 +13,33 @@ const calculateDownwardTrend = (marketChart: MarketChart) => {
   let endDate: number = 0;
   let prevDate: number = 0;
   let prevPrice: number = 0;
-  let flag: boolean = false;
+  let continueToCalc: boolean = false;
 
   hourlyPrices.forEach((datePrice, idx, arr) => {
     const date = datePrice[0];
     const price = datePrice[1];
 
+    // Assign current values if first iteration, otherwise check if trend ended or final iteration
     if (idx === 0) {
       begDate = date;
       endDate = date;
     } else if (price > prevPrice) {
       endDate = prevDate;
-      flag = true;
+      continueToCalc = true;
     } else if (idx === arr.length - 1) { // last iteration if downward trend
       endDate = date;
-      flag = true;
+      continueToCalc = true;
     }
 
-    if (flag && idx !== 0) {
+    if (continueToCalc) {
+      // Assign values if current trend is longer than previous one
       if ((endDate - begDate)
       > (longestTimeFrame[1] - longestTimeFrame[0])) {
         longestTimeFrame = [begDate, endDate];
       }
       begDate = date;
     }
-    flag = false;
+    continueToCalc = false;
     prevDate = date;
     prevPrice = price;
   });
