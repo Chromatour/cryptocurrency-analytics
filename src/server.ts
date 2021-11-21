@@ -34,8 +34,8 @@ const initServer = async () => {
       routePrefix: `${ROUTE_PREFIX}/documentation`,
       swagger: {
         info: {
-          title: 'Project Vincit Rising Star backend',
-          description: 'Vincit Rising Star Cryptocurrency market analyzer backend service',
+          title: 'Cryptocurrency market analytics API',
+          description: 'Cryptocurrency market analytics API made for Vincit Rising Star -program',
           version: '1.0.0',
         },
         host: SWAGGER_OPTIONS.host,

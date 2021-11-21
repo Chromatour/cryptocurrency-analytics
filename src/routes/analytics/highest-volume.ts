@@ -57,19 +57,22 @@ const handler = async (req: FastifyRequest, reply: FastifyReply) => {
     });
     return;
   }
+  let fromDate: Date = new Date(body.fromDate);
+  let toDate: Date = new Date(body.toDate);
 
-  const fromDate = Math.round(new Date(body.fromDate).getTime() / 1000);
-  const toDate = Math.round(new Date(body.toDate).getTime() / 1000) + 3600;
+  // Swap dates if given in wrong order
+  if (fromDate > toDate) {
+    [fromDate, toDate] = [toDate, fromDate];
+  }
+
+  // Add 3600 seconds to ensure that the final date is also included in request data
+  const fromDateUnix = Math.round(fromDate.getTime() / 1000);
+  const toDateUnix = Math.round(toDate.getTime() / 1000) + 3600;
 
   let marketChart: MarketChart;
   try {
-    marketChart = await marketChartRequest(fromDate, toDate);
+    marketChart = await marketChartRequest(fromDateUnix, toDateUnix);
   } catch (error) {
-    log.error('Couldn\'t fetch the market chart from given data range!', error);
-    reply.status(500).send({
-      status: 'ERROR',
-      message: 'Couldn\'t fetch the data!',
-    });
     return;
   }
 
