@@ -8,6 +8,7 @@ const calculateHighestProfits = (marketChart: MarketChart) => {
   % (86400 * 1000) < 3600 * 1000);
   const priceArr = dailyPrices.map((day) => day[1]);
   const dayArr = dailyPrices.map((day) => day[0]);
+  console.log(priceArr);
 
   // Max difference script
   let minDate: number = dailyPrices[0][0];

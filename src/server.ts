@@ -1,5 +1,7 @@
 import * as path from 'path';
 import fastifyAutoload from 'fastify-autoload';
+import { FastifyReply, FastifyRequest, FastifyError } from 'fastify';
+import { log } from './lib/utils/logger';
 
 const config = require('config');
 
@@ -54,6 +56,22 @@ const initServer = async () => {
     })
     .register(fastifyAutoload, {
       dir: path.join(__dirname, 'routes'),
+    })
+    .setErrorHandler((error: FastifyError, request: FastifyRequest, reply: FastifyReply) => {
+      log.error({
+        error: error.name,
+        message: error.message,
+        url: request.url,
+        method: request.method,
+        body: request.body,
+        stack: error.stack,
+      });
+
+      reply.status(500).send({
+        statusCode: 500,
+        error: 'Internal Server Error',
+        message: 'Internal Server Error',
+      });
     });
 
   return {

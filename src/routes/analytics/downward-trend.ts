@@ -45,6 +45,17 @@ const schema = {
 const handler = async (req: FastifyRequest, reply: FastifyReply) => {
   const body = req.body as DateBody;
 
+  // Check if input is valid
+  if (body.fromDate === body.toDate) {
+    log.info('User input duplicate dates');
+
+    reply.status(400).send({
+      status: 'Bad Request',
+      message: 'The given dates are the same! Please give two different dates.',
+    });
+    return;
+  }
+
   const fromDate = Math.round(new Date(body.fromDate).getTime() / 1000);
   const toDate = Math.round(new Date(body.toDate).getTime() / 1000) + 3600;
 
@@ -52,11 +63,6 @@ const handler = async (req: FastifyRequest, reply: FastifyReply) => {
   try {
     marketChart = await marketChartRequest(fromDate, toDate);
   } catch (error) {
-    log.error('Couldn\'t fetch the market chart from given data range!', error);
-    reply.status(500).send({
-      status: 'ERROR',
-      message: 'Couldn\'t fetch the data!',
-    });
     return;
   }
   const longestTimeFrame = calculateDownwardTrend(marketChart);

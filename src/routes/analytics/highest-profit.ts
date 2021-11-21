@@ -45,6 +45,17 @@ const schema = {
 const handler = async (req: FastifyRequest, reply: FastifyReply) => {
   const body = req.body as DateBody;
 
+  // Check if input is valid
+  if (body.fromDate === body.toDate) {
+    log.info('User input duplicate dates');
+
+    reply.status(400).send({
+      status: 'Bad Request',
+      message: 'The given dates are the same! Please give two different dates.',
+    });
+    return;
+  }
+
   // Add 3600 seconds to ensure that the final date is also included in request data
   const fromDate = Math.round(new Date(body.fromDate).getTime() / 1000);
   const toDate = Math.round(new Date(body.toDate).getTime() / 1000) + 3600;
