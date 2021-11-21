@@ -4,7 +4,7 @@ const calculateDownwardTrend = (marketChart: MarketChart) => {
   const { prices } = marketChart;
 
   // Filter data first so there's only one piece of data per day that is nearest the midnight
-  const hourlyPrices = prices.filter((price) => price[0]
+  const dailyPrices: number[][] = prices.filter((price) => price[0]
   % (86400 * 1000) < 3600 * 1000);
 
   // Data structure: [number(unix timestamp), number(btc price)]
@@ -15,7 +15,7 @@ const calculateDownwardTrend = (marketChart: MarketChart) => {
   let prevPrice: number = 0;
   let continueToCalc: boolean = false;
 
-  hourlyPrices.forEach((datePrice, idx, arr) => {
+  dailyPrices.forEach((datePrice, idx, arr) => {
     const date = datePrice[0];
     const price = datePrice[1];
 

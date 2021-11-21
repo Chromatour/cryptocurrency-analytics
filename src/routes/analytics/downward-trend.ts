@@ -6,7 +6,7 @@ import { DateBody, MarketChart } from '../../types/coingecko.types';
 
 const schema = {
   description: 'Downward trend calculator',
-  summary: 'Calculate longest downward trend between given days',
+  summary: 'Calculate longest downward trend between given days. Please give two different dates.',
   tags: ['Analytics'],
   body: {
     type: 'object',

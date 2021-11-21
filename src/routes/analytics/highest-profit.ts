@@ -2,11 +2,11 @@ import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { log } from '../../lib/utils/logger';
 import marketChartRequest from '../../lib/market-chart-request';
 import { DateBody, MarketChart } from '../../types/coingecko.types';
-import findHighestVolume from '../../lib/find-highest-volume';
+import calculateHighestProfits from '../../lib/calculate-highest-profit';
 
 const schema = {
-  description: 'Highest trading volume calculator',
-  summary: 'Find highest trading volume and volume worth in given range.  Please give two different dates.',
+  description: 'Highest profit calculator',
+  summary: 'Find the best days for buying and selling for highest profit in given range. Please give two different dates.',
   tags: ['Analytics'],
   body: {
     type: 'object',
@@ -26,18 +26,16 @@ const schema = {
     200: {
       type: 'object',
       properties: {
-        tradeDate: {
+        buyDate: {
           type: 'string',
           format: 'date',
         },
-        tradeValue: {
+        sellDate: {
           type: 'string',
+          format: 'date',
         },
-        unit: {
-          type: 'string',
-        },
-        currency: {
-          type: 'string',
+        sellOrBuy: {
+          type: 'boolean',
         },
       },
     },
@@ -47,6 +45,7 @@ const schema = {
 const handler = async (req: FastifyRequest, reply: FastifyReply) => {
   const body = req.body as DateBody;
 
+  // Add 3600 seconds to ensure that the final date is also included in request data
   const fromDate = Math.round(new Date(body.fromDate).getTime() / 1000);
   const toDate = Math.round(new Date(body.toDate).getTime() / 1000) + 3600;
 
@@ -62,7 +61,7 @@ const handler = async (req: FastifyRequest, reply: FastifyReply) => {
     return;
   }
 
-  const result = findHighestVolume(marketChart);
+  const result = calculateHighestProfits(marketChart);
 
   reply.send(result);
 };
@@ -70,7 +69,7 @@ const handler = async (req: FastifyRequest, reply: FastifyReply) => {
 export default async (fastify: FastifyInstance) => {
   fastify.route({
     method: 'POST',
-    url: '/highest-volume',
+    url: '/highest-profit',
     handler,
     schema,
   });
