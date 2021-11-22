@@ -2,7 +2,7 @@
 This NodeJS application was done as a pre-assignment for Vincit Rising Start -program. It uses Swagger as user interface and node v16.13.0.
 User can modify currency and cryptocurrencyId in default.json according to CoinGeckos parameters.
 
-## How to run in local env for development
+## How to run in local environment
  Run the following commands in your terminal while inside the project.
 
 ```Shell
