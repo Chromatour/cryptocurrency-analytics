@@ -1,13 +1,13 @@
-const numberFormatter = (num: number, digits: number = 2) => {
-  const lookup = [
-    { value: 1, symbol: '' },
-    { value: 1e3, symbol: ' K' },
-    { value: 1e6, symbol: ' M' },
-    { value: 1e9, symbol: ' B' },
-    { value: 1e12, symbol: ' T' },
-  ];
-  const rx: RegExp = /\.0+$|(\.[0-9]*[1-9])0+$/;
+const lookup = [
+  { value: 1, symbol: '' },
+  { value: 1e3, symbol: ' K' },
+  { value: 1e6, symbol: ' M' },
+  { value: 1e9, symbol: ' B' },
+  { value: 1e12, symbol: ' T' },
+];
+const rx: RegExp = /\.0+$|(\.[0-9]*[1-9])0+$/;
 
+const numberFormatter = (num: number, digits: number = 2) => {
   // Find the closest smaller value-symbol -pair
   const item: { value: number, symbol: string }
   | undefined = lookup.slice().reverse().find((lookupItem) => num >= lookupItem.value);

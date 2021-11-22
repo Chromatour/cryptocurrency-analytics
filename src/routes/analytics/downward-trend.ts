@@ -70,13 +70,7 @@ const handler = async (req: FastifyRequest, reply: FastifyReply) => {
   const fromDateUnix = Math.round(fromDate.getTime() / 1000);
   const toDateUnix = Math.round(toDate.getTime() / 1000) + 3600;
 
-  let marketChart: MarketChart;
-  try {
-    marketChart = await marketChartRequest(fromDateUnix, toDateUnix);
-  } catch (error) {
-    return;
-  }
-
+  const marketChart: MarketChart = await marketChartRequest(fromDateUnix, toDateUnix);
   const longestTimeFrame = calculateDownwardTrend(marketChart);
 
   reply.send(longestTimeFrame);
