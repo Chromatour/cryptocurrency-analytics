@@ -6,7 +6,8 @@ import calculateHighestProfits from '../../lib/calculate-highest-profit';
 
 const schema = {
   description: 'Highest profit calculator',
-  summary: 'Find the best days for buying and selling for highest profit in given range. Please give two different dates.',
+  summary: 'Find the best days for buying and selling for highest profit in given range.'
+    + 'Please give two different dates.',
   tags: ['Analytics'],
   body: {
     type: 'object',
@@ -15,10 +16,12 @@ const schema = {
       fromDate: {
         type: 'string',
         format: 'date',
+        description: 'The first date to be included in calculation',
       },
       toDate: {
         type: 'string',
         format: 'date',
+        description: 'The last date to be included in calculation',
       },
     },
   },
@@ -34,7 +37,7 @@ const schema = {
           type: 'string',
           format: 'date',
         },
-        sellOrBuy: {
+        profit: {
           type: 'boolean',
         },
       },
@@ -51,7 +54,7 @@ const handler = async (req: FastifyRequest, reply: FastifyReply) => {
 
     reply.status(400).send({
       status: 'Bad Request',
-      message: 'The given dates are the same! Please give two different dates.',
+      message: 'The given dates are the same. Please give two different dates.',
     });
     return;
   }

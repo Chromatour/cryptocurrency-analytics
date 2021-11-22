@@ -5,11 +5,16 @@ import numberFormatter from './utils/number-formatter';
 
 const currency: string = config.get('currency');
 
+/**
+ * Finds the highest volume day in given range
+ * @param marketChart data to be analysed
+ * @returns object that includes date that had the highest volume,
+ * its value, unit(order of magnitude prefix used with currencies) and currency
+ */
 const findHighestVolume = (marketChart: MarketChart) => {
-  const { prices } = marketChart;
-  const tradingVolumes = marketChart.total_volumes;
+  const { prices, tradingVolumes } = marketChart;
 
-  // First find highest volume in given range
+  // First find the highest volume and corresponding date in given range
   const volumes = tradingVolumes.map((day) => day[1]);
   const highestVolume = Math.max(...volumes);
   const indexOfHighest = volumes.indexOf(highestVolume);
@@ -21,7 +26,7 @@ const findHighestVolume = (marketChart: MarketChart) => {
   const dayPrices = dateAndPrices.map((day) => day[1]);
   const averagePriceForDay = calcAverage(dayPrices);
 
-  // Calculate volume in currency with average price
+  // Calculate trade volume's value with average price
   const valueWithUnit = numberFormatter(averagePriceForDay * highestVolume);
   const result: { tradeDate: Date, tradeValue: string, unit: string, currency: string } = {
     tradeDate: new Date(tradingVolumes[indexOfHighest][0]),

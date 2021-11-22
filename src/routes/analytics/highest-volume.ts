@@ -6,19 +6,23 @@ import findHighestVolume from '../../lib/find-highest-volume';
 
 const schema = {
   description: 'Highest trading volume calculator',
-  summary: 'Find highest trading volume and volume worth in given range.  Please give two different dates.',
+  summary: 'Find highest trading volume and volume worth in given range. '
+    + '\n Please give two different dates.',
   tags: ['Analytics'],
   body: {
+    description: 'Please give two different dates.',
     type: 'object',
     required: ['fromDate', 'toDate'],
     properties: {
       fromDate: {
         type: 'string',
         format: 'date',
+        description: 'The first date to be included in calculation',
       },
       toDate: {
         type: 'string',
         format: 'date',
+        description: 'The last date to be included in calculation',
       },
     },
   },
@@ -53,7 +57,7 @@ const handler = async (req: FastifyRequest, reply: FastifyReply) => {
 
     reply.status(400).send({
       status: 'Bad Request',
-      message: 'The given dates are the same! Please give two different dates.',
+      message: 'The given dates are the same. Please give two different dates.',
     });
     return;
   }

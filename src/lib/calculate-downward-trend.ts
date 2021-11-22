@@ -1,5 +1,11 @@
 import { MarketChart } from '../types/coingecko.types';
 
+/**
+ * Calculate longest downward trend in given range
+ * @param marketChart data to be analysed
+ * @returns object that includes start date,
+ * end date and number of days for longest downward trend
+ */
 const calculateDownwardTrend = (marketChart: MarketChart) => {
   const { prices } = marketChart;
 
@@ -13,7 +19,7 @@ const calculateDownwardTrend = (marketChart: MarketChart) => {
   let endDate: number = 0;
   let prevDate: number = 0;
   let prevPrice: number = 0;
-  let continueToCalc: boolean = false;
+  let trendEnded: boolean = false;
 
   dailyPrices.forEach((datePrice, idx, arr) => {
     const date = datePrice[0];
@@ -25,13 +31,13 @@ const calculateDownwardTrend = (marketChart: MarketChart) => {
       endDate = date;
     } else if (price > prevPrice) {
       endDate = prevDate;
-      continueToCalc = true;
-    } else if (idx === arr.length - 1) { // last iteration if downward trend
+      trendEnded = true;
+    } else if (idx === arr.length - 1) {
       endDate = date;
-      continueToCalc = true;
+      trendEnded = true;
     }
 
-    if (continueToCalc) {
+    if (trendEnded) {
       // Assign values if current trend is longer than previous one
       if ((endDate - begDate)
       > (longestTimeFrame[1] - longestTimeFrame[0])) {
@@ -39,12 +45,12 @@ const calculateDownwardTrend = (marketChart: MarketChart) => {
       }
       begDate = date;
     }
-    continueToCalc = false;
+    trendEnded = false;
     prevDate = date;
     prevPrice = price;
   });
 
-  // Create object for results
+  // Create object for results. Round to closest because using near to midnight times
   const result: { beginDate: Date, endDate: Date, numberOfDays: number } = {
     beginDate: new Date(longestTimeFrame[0]),
     endDate: new Date(longestTimeFrame[1]),

@@ -54,6 +54,7 @@ const initServer = async () => {
       },
       exposeRoute: true,
     })
+    // Register automatically all endpoints from routes -folder
     .register(fastifyAutoload, {
       dir: path.join(__dirname, 'routes'),
     })

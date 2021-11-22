@@ -7,10 +7,16 @@ const numberFormatter = (num: number, digits: number = 2) => {
     { value: 1e12, symbol: ' T' },
   ];
   const rx: RegExp = /\.0+$|(\.[0-9]*[1-9])0+$/;
+
+  // Find the closest smaller value-symbol -pair
   const item: { value: number, symbol: string }
   | undefined = lookup.slice().reverse().find((lookupItem) => num >= lookupItem.value);
-  let value: string = '0';
-  let unit: string = '0';
+
+  // Initialise value and unit to situation no pair is found
+  let value: string = num.toString();
+  let unit: string = '';
+
+  // Format value to match correct order of magnitude prefix
   if (item) {
     value = (num / item.value).toFixed(digits).replace(rx, '$1');
     unit = item.symbol;
